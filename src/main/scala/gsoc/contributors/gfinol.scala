@@ -9,12 +9,14 @@ import fs2.dom.HtmlElement
 import calico.html.io.{*, given}
 import calico.syntax.*
 
+val raibow = List("red", "orange", "yellow", "green", "blue", "indigo", "violet")
+
 val gfinol = Contributor("gfinol"):
-  SignallingRef[IO].of(false).toResource.flatMap { revealed =>
+  SignallingRef[IO].of(0).toResource.flatMap { count =>
     div(
       p(
         "I am ",
-        revealed.map(r => if r then "red" else "inherit").changes.map { color =>
+        count.map(r => raibow(r % raibow.length)).changes.map { color =>
           span(
             styleAttr := s"color: $color; font-weight: bold",
             "@gfinol"
@@ -22,13 +24,9 @@ val gfinol = Contributor("gfinol"):
         },
         " on GitHub. I agree to follow the Typelevel CoC and GSoC AI policy."
       ),
-      revealed
-        .map(r => if r then p(s"My favorite programming language is Scala!") else div(s"")),
       button(
-        onClick --> (_.foreach(_ => revealed.update(!_))),
-        revealed.map(r =>
-          if r then "Hide my favorite programming language"
-          else "Click to learn my favorite programming language!")
+        onClick --> (_.foreach(_ => count.update(_ + 1 % raibow.length))),
+        "Click me! 🌈"
       )
     )
   }

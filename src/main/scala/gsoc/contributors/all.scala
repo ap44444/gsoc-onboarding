@@ -5,7 +5,7 @@ import cats.data.NonEmptyList
 
 // the order matters! Check step 5 of the README for details.
 val allContributors = NonEmptyList.of(
-  `gfinol`,
+  gfinol,
   synan_mannan,
   antoniojimeneznieto,
   `tanmay_008`,
